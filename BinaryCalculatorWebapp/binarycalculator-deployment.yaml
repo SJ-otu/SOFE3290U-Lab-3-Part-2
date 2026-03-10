@@ -1,0 +1,32 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: binarycalculator-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: binary-calculator
+  template:
+    metadata:
+      labels:
+        app: binary-calculator
+    spec:
+      containers:
+      - name: calculator-container
+        image: us-central1-docker.pkg.dev/project-96ccc9cf-b67b-45a3-a8b/sofe3980u/binarycalculator:latest
+        ports:
+        - containerPort: 8080
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: binarycalculator-service
+spec:
+  type: LoadBalancer
+  selector:
+    app: binary-calculator
+  ports:
+    - protocol: TCP
+      port: 8080
+      targetPort: 8080
